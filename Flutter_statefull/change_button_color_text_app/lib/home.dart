@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -12,6 +14,16 @@ class _HomeState extends State<Home> {
   late Color buttonColor;
   late double imagesWidtho;
   late double imagesWidtht;
+  late String imagespika;
+  List<String> pika = [
+    'images/pikachu-1.jpg',
+    'images/pikachu-2.jpg',
+    'images/pikachu-3.jpg',
+    'images/apple.jpeg',
+    'images/banana.jpeg',
+    'images/peach.jpeg',
+    'images/pineapple.jpeg',
+  ];
 
   @override
   void initState() {
@@ -20,6 +32,7 @@ class _HomeState extends State<Home> {
     buttonColor = Colors.blue;
     imagesWidtho = 100;
     imagesWidtht = 100;
+    imagespika = pika[0];
   }
 
   @override
@@ -46,10 +59,7 @@ class _HomeState extends State<Home> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Image.asset(
-                    'images/pikachu-1.jpg',
-                    width: imagesWidtht,
-                  ),
+                  child: Image.asset(imagespika, width: imagesWidtht),
                 ),
               ],
             ),
@@ -66,7 +76,16 @@ class _HomeState extends State<Home> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
-                  onPressed: () => _onClick(),
+                  onPressed: () => _onClickbefore(),
+                  child: Text(
+                    buttonString,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
+                  onPressed: () => _onClicknext(),
                   child: Text(
                     buttonString,
                     style: TextStyle(color: Colors.white),
@@ -87,10 +106,45 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _onClick() {
-    (buttonString == 'Hello')
-        ? (buttonString = 'Flutter', buttonColor = Colors.amber)
-        : (buttonString = 'Hello', buttonColor = Colors.blue);
+  _onClicknext() {
+    int i = pika.indexOf(imagespika);
+    (i == (pika.length - 1))
+        ? {imagespika = pika[0]}
+        : {
+          (buttonString == 'Hello')
+              ? (
+                buttonString = 'Flutter',
+                buttonColor = Colors.amber,
+                imagespika = pika[i + 1],
+              )
+              : (
+                buttonString = 'Hello',
+                buttonColor = Colors.blue,
+                imagespika = pika[i + 1],
+              ),
+        };
+
+    setState(() {});
+  }
+
+  _onClickbefore() {
+    int i = pika.indexOf(imagespika);
+    (i == 0)
+        ? {imagespika = pika[(pika.length - 1)]}
+        : {
+          (buttonString == 'Hello')
+              ? (
+                buttonString = 'Flutter',
+                buttonColor = Colors.amber,
+                imagespika = pika[i - 1],
+              )
+              : (
+                buttonString = 'Hello',
+                buttonColor = Colors.blue,
+                imagespika = pika[i - 1],
+              ),
+        };
+
     setState(() {});
   }
 
