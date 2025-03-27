@@ -8,10 +8,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late TextEditingController num1Controller;
-  late TextEditingController num2Controller;
-  late TextEditingController calcResult;
-  late bool show;
+  late TextEditingController num1Controller; // 첫번째 숫자 입력
+  late TextEditingController num2Controller; // 두번째 숫자 입력
+  late TextEditingController calcResult; // 계산 결과
+  late bool show; // 계산 결과 보이기
 
   @override
   void initState() {
@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
     num2Controller = TextEditingController();
     calcResult = TextEditingController();
 
-    show = false;
+    show = false; // 초기값  (가리기)
   }
 
   @override
@@ -35,12 +35,15 @@ class _HomeState extends State<Home> {
             style: TextStyle(color: Colors.white),
           ),
         ),
+
+        // ----- body ---------
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // -------- 첫번째 숫자 입력 필드 -----------
                 Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Text("* 첫번째 숫자"),
@@ -61,6 +64,8 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
+
+                    // ------ 첫번째 숫자 지우기버튼-------
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: ElevatedButton(
@@ -78,6 +83,8 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
+
+                // ------ 두번째 숫자 입력 필드 ---------
                 Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Text('* 두번째 숫자'),
@@ -98,6 +105,8 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
+
+                    // ------- 두번째 숫자 지우기 버튼 ----------
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: ElevatedButton(
@@ -116,6 +125,8 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 SizedBox(height: 15),
+
+                // -------- 계산 산수, 계산 결과 --------
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -123,6 +134,7 @@ class _HomeState extends State<Home> {
                       children: [
                         Row(
                           children: [
+                            // -------- 더하기 버튼 --------
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: ElevatedButton(
@@ -135,6 +147,8 @@ class _HomeState extends State<Home> {
                                 child: Text('+'),
                               ),
                             ),
+
+                            // -------- 빼기 버튼 --------
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: ElevatedButton(
@@ -147,6 +161,8 @@ class _HomeState extends State<Home> {
                                 child: Text('-'),
                               ),
                             ),
+
+                            // -------- 곱하기 버튼 --------
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: ElevatedButton(
@@ -159,6 +175,7 @@ class _HomeState extends State<Home> {
                                 child: Text('x'),
                               ),
                             ),
+                            // -------- 나누기 버튼 --------
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: ElevatedButton(
@@ -173,6 +190,8 @@ class _HomeState extends State<Home> {
                             ),
                           ],
                         ),
+
+                        // -------- 전체 지우기 버튼 --------
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: ElevatedButton(
@@ -198,13 +217,15 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
+
+                // -------- 계산 결과 --------
                 Visibility(
                   visible: show,
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: TextField(
                       controller: calcResult,
-                      decoration: InputDecoration(labelText: '결과'),
+                      decoration: InputDecoration(labelText: '계산 결과'),
                       keyboardType: TextInputType.number,
                       readOnly: true,
                     ),
@@ -220,6 +241,7 @@ class _HomeState extends State<Home> {
 
   // ------ Function -------
 
+  // -------- 산수 함수 --------
   calcCheck(String i) {
     if (num1Controller.text.trim().isEmpty ||
         num2Controller.text.trim().isEmpty) {
@@ -242,13 +264,18 @@ class _HomeState extends State<Home> {
         calcResult.text = sum.toString();
       }
       if (i == '%') {
-        double sum = num1 / num2;
-        calcResult.text = sum.toString();
+        if (num2 == 0) {
+          calcResult.text = "Impossible";
+        } else {
+          double sum = num1 / num2;
+          calcResult.text = sum.toString();
+        }
       }
     }
     setState(() {});
   }
 
+  // -------- 에러 메시지 --------
   errorSnackBar() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -259,6 +286,7 @@ class _HomeState extends State<Home> {
     );
   }
 
+  // -------- 전체 지우기 --------
   delet() {
     num1Controller.text = "";
     num2Controller.text = "";
@@ -267,6 +295,7 @@ class _HomeState extends State<Home> {
     FocusScope.of(context).unfocus();
   }
 
+  // -------- 입력 숫자 지우기 --------
   deletNumber(int a) {
     (a == 1) ? num1Controller.text = "" : num2Controller.text = "";
   }
