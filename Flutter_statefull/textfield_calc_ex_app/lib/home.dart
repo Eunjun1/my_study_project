@@ -264,8 +264,12 @@ class _HomeState extends State<Home> {
         calcResult.text = sum.toString();
       }
       if (i == '%') {
-        double sum = num1 / num2;
-        calcResult.text = sum.toString();
+        if (num2 == 0) {
+          calcResult.text = "Impossible";
+        } else {
+          double sum = num1 / num2;
+          calcResult.text = sum.toString();
+        }
       }
     }
     setState(() {});
